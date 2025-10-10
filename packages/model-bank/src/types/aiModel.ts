@@ -27,6 +27,10 @@ export type AiModelType = z.infer<typeof AiModelTypeSchema>;
 
 export interface ModelAbilities {
   /**
+   * whether model supports audio
+   */
+  audio?: boolean;
+  /**
    * whether model supports file upload
    */
   files?: boolean;
@@ -57,6 +61,7 @@ export interface ModelAbilities {
 }
 
 const AiModelAbilitiesSchema = z.object({
+  audio: z.boolean().optional(),
   // files: z.boolean().optional(),
   functionCall: z.boolean().optional(),
   reasoning: z.boolean().optional(),

@@ -209,7 +209,7 @@ export class LobeGoogleAI implements LobeRuntimeAI {
         includeThoughts:
           (!!thinkingBudget ||
             (model && (model.includes('-2.5-') || model.includes('thinking')))) &&
-          resolvedThinkingBudget !== 0
+            resolvedThinkingBudget !== 0
             ? true
             : undefined,
         thinkingBudget: resolvedThinkingBudget,
@@ -550,6 +550,35 @@ export class LobeGoogleAI implements LobeRuntimeAI {
         }
 
         throw new TypeError(`currently we don't support video url: ${content.video_url.url}`);
+      }
+
+      case 'audio_url': {
+        const { mimeType, base64, type } = parseDataUri(content.audio_url.url);
+
+        if (type === 'base64') {
+          if (!base64) {
+            throw new TypeError("Audio URL doesn't contain base64 data");
+          }
+
+          return {
+            inlineData: { data: base64, mimeType: mimeType || 'audio/mp3' },
+          };
+        }
+
+        if (type === 'url') {
+          // For audio URLs, we need to fetch and convert to base64
+          // Note: This might need size limits for practical use
+          const response = await fetch(content.audio_url.url);
+          const arrayBuffer = await response.arrayBuffer();
+          const base64 = Buffer.from(arrayBuffer).toString('base64');
+          const mimeType = response.headers.get('content-type') || 'audio/mp3';
+
+          return {
+            inlineData: { data: base64, mimeType },
+          };
+        }
+
+        throw new TypeError(`currently we don't support audio url: ${content.audio_url.url}`);
       }
     }
   };

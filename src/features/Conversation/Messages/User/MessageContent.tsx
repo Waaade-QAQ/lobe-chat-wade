@@ -5,6 +5,7 @@ import BubblesLoading from '@/components/BubblesLoading';
 import { LOADING_FLAT } from '@/const/message';
 import { ChatMessage } from '@/types/message';
 
+import AudioFileListViewer from './AudioFileListViewer';
 import FileListViewer from './FileListViewer';
 import ImageFileListViewer from './ImageFileListViewer';
 import VideoFileListViewer from './VideoFileListViewer';
@@ -13,7 +14,7 @@ export const UserMessageContent = memo<
   ChatMessage & {
     editableContent: ReactNode;
   }
->(({ id, editableContent, content, imageList, videoList, fileList }) => {
+>(({ id, editableContent, content, imageList, videoList, audioList, fileList }) => {
   if (content === LOADING_FLAT) return <BubblesLoading />;
 
   return (
@@ -21,6 +22,7 @@ export const UserMessageContent = memo<
       {editableContent}
       {imageList && imageList?.length > 0 && <ImageFileListViewer items={imageList} />}
       {videoList && videoList?.length > 0 && <VideoFileListViewer items={videoList} />}
+      {audioList && audioList?.length > 0 && <AudioFileListViewer items={audioList} />}
       {fileList && fileList?.length > 0 && (
         <div style={{ marginTop: 8 }}>
           <FileListViewer items={fileList} />

@@ -9,6 +9,7 @@ import { AIChatModelCard, AIImageModelCard } from '../types';
 const googleChatModels: AIChatModelCard[] = [
   {
     abilities: {
+      audio: true,
       functionCall: true,
       reasoning: true,
       search: true,
@@ -60,6 +61,7 @@ const googleChatModels: AIChatModelCard[] = [
   },
   {
     abilities: {
+      audio: true,
       functionCall: true,
       reasoning: true,
       search: true,
@@ -87,6 +89,7 @@ const googleChatModels: AIChatModelCard[] = [
   },
   {
     abilities: {
+      audio: true,
       functionCall: true,
       reasoning: true,
       search: true,
@@ -114,6 +117,7 @@ const googleChatModels: AIChatModelCard[] = [
   },
   {
     abilities: {
+      audio: true,
       functionCall: true,
       reasoning: true,
       search: true,
@@ -168,6 +172,7 @@ const googleChatModels: AIChatModelCard[] = [
   },
   {
     abilities: {
+      audio: true,
       functionCall: true,
       reasoning: true,
       search: true,
@@ -221,6 +226,7 @@ const googleChatModels: AIChatModelCard[] = [
   },
   {
     abilities: {
+      audio: true,
       functionCall: true,
       reasoning: true,
       search: true,
@@ -273,6 +279,7 @@ const googleChatModels: AIChatModelCard[] = [
   },
   {
     abilities: {
+      audio: true,
       functionCall: true,
       reasoning: true,
       search: true,
@@ -302,6 +309,7 @@ const googleChatModels: AIChatModelCard[] = [
   },
   {
     abilities: {
+      audio: true,
       functionCall: true,
       reasoning: true,
       search: true,
@@ -330,6 +338,7 @@ const googleChatModels: AIChatModelCard[] = [
   },
   {
     abilities: {
+      audio: true,
       functionCall: true,
       reasoning: true,
       search: true,
@@ -403,6 +412,7 @@ const googleChatModels: AIChatModelCard[] = [
   },
   {
     abilities: {
+      audio: true,
       functionCall: true,
       reasoning: true,
       search: true,
@@ -431,6 +441,7 @@ const googleChatModels: AIChatModelCard[] = [
   },
   {
     abilities: {
+      audio: true,
       functionCall: true,
       reasoning: true,
       search: true,
@@ -459,6 +470,7 @@ const googleChatModels: AIChatModelCard[] = [
   },
   {
     abilities: {
+      audio: true,
       functionCall: true,
       reasoning: true,
       search: true,
@@ -581,6 +593,7 @@ const googleChatModels: AIChatModelCard[] = [
   },
   {
     abilities: {
+      audio: true,
       vision: true,
     },
     contextWindowTokens: 1_048_576 + 8192,
@@ -599,6 +612,7 @@ const googleChatModels: AIChatModelCard[] = [
   },
   {
     abilities: {
+      audio: true,
       vision: true,
     },
     contextWindowTokens: 1_048_576 + 8192,
@@ -636,6 +650,7 @@ const googleChatModels: AIChatModelCard[] = [
   },
   {
     abilities: {
+      audio: true,
       vision: true,
     },
     contextWindowTokens: 1_048_576 + 32_768,
@@ -654,6 +669,7 @@ const googleChatModels: AIChatModelCard[] = [
   },
   {
     abilities: {
+      audio: true,
       vision: true,
     },
     contextWindowTokens: 40_959,
@@ -673,6 +689,7 @@ const googleChatModels: AIChatModelCard[] = [
   },
   {
     abilities: {
+      audio: true,
       functionCall: true,
       vision: true,
     },
@@ -693,6 +710,7 @@ const googleChatModels: AIChatModelCard[] = [
   },
   {
     abilities: {
+      audio: true,
       functionCall: true,
       vision: true,
     },
@@ -714,6 +732,7 @@ const googleChatModels: AIChatModelCard[] = [
   },
   {
     abilities: {
+      audio: true,
       functionCall: true,
       vision: true,
     },

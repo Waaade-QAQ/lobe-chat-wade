@@ -23,7 +23,7 @@ import { getToolStoreState } from '@/store/tool';
 import { toolSelectors } from '@/store/tool/selectors';
 import { genToolCallingName } from '@/utils/toolCall';
 
-import { isCanUseVideo, isCanUseVision } from './helper';
+import { isCanUseAudio, isCanUseVideo, isCanUseVision } from './helper';
 
 interface ContextEngineeringContext {
   enableHistoryCount?: boolean;
@@ -98,6 +98,7 @@ export const contextEngineering = async ({
       // 8. Message content processing
       new MessageContentProcessor({
         fileContext: { enabled: isServerMode, includeFileUrl: !isDesktop },
+        isCanUseAudio,
         isCanUseVideo,
         isCanUseVision,
         model,

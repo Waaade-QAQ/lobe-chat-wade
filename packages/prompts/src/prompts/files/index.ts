@@ -1,5 +1,6 @@
-import { ChatFileItem, ChatImageItem, ChatVideoItem } from '@lobechat/types';
+import { ChatAudioItem, ChatFileItem, ChatImageItem, ChatVideoItem } from '@lobechat/types';
 
+import { audiosPrompts } from './audio';
 import { filePrompts } from './file';
 import { imagesPrompts } from './image';
 import { videosPrompts } from './video';
@@ -8,9 +9,11 @@ export const filesPrompts = ({
   imageList,
   fileList,
   videoList,
+  audioList,
   addUrl = true,
 }: {
   addUrl?: boolean;
+  audioList?: ChatAudioItem[];
   fileList?: ChatFileItem[];
   imageList?: ChatImageItem[];
   videoList?: ChatVideoItem[];
@@ -18,13 +21,15 @@ export const filesPrompts = ({
   const hasImages = (imageList || []).length > 0;
   const hasFiles = (fileList || []).length > 0;
   const hasVideos = (videoList || []).length > 0;
+  const hasAudios = (audioList || []).length > 0;
 
-  if (!hasImages && !hasFiles && !hasVideos) return '';
+  if (!hasImages && !hasFiles && !hasVideos && !hasAudios) return '';
 
   const contentParts = [
     hasImages ? imagesPrompts(imageList!, addUrl) : '',
     hasFiles ? filePrompts(fileList!, addUrl) : '',
     hasVideos ? videosPrompts(videoList!, addUrl) : '',
+    hasAudios ? audiosPrompts(audioList!, addUrl) : '',
   ].filter(Boolean);
 
   const prompt = `<!-- SYSTEM CONTEXT (NOT PART OF USER QUERY) -->

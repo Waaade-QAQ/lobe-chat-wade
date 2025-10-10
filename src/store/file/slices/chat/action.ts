@@ -102,8 +102,12 @@ export const createFileSlice: StateCreator<
         let previewUrl: string | undefined = undefined;
         let base64Url: string | undefined = undefined;
 
-        // only image and video can be previewed, we create a previewUrl and base64Url for them
-        if (file.type.startsWith('image') || file.type.startsWith('video')) {
+        // image, video and audio can be previewed, we create a previewUrl and base64Url for them
+        if (
+          file.type.startsWith('image') ||
+          file.type.startsWith('video') ||
+          file.type.startsWith('audio')
+        ) {
           const data = await file.arrayBuffer();
 
           previewUrl = URL.createObjectURL(new Blob([data!], { type: file.type }));
@@ -136,7 +140,7 @@ export const createFileSlice: StateCreator<
               error === UPLOAD_NETWORK_ERROR
                 ? t('upload.networkError', { ns: 'error' })
                 : // or the error from the server
-                  typeof error === 'string'
+                typeof error === 'string'
                   ? error
                   : t('upload.unknownError', { ns: 'error', reason: (error as Error).message }),
             message: t('upload.uploadFailed', { ns: 'error' }),

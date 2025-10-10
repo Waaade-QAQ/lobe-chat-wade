@@ -5,22 +5,22 @@ import { OpenAIFunctionCall } from './functionCall';
 export type ChatResponseFormat =
   | { type: 'json_object' }
   | {
-      json_schema: {
-        /**
-         * Schema identifier required by OpenAI.
-         */
-        name: string;
-        /**
-         * JSON schema definition used for validation.
-         */
-        schema: Record<string, any>;
-        /**
-         * Enforce strict schema validation when true.
-         */
-        strict?: boolean;
-      };
-      type: 'json_schema';
+    json_schema: {
+      /**
+       * Schema identifier required by OpenAI.
+       */
+      name: string;
+      /**
+       * JSON schema definition used for validation.
+       */
+      schema: Record<string, any>;
+      /**
+       * Enforce strict schema validation when true.
+       */
+      strict?: boolean;
     };
+    type: 'json_schema';
+  };
 
 interface UserMessageContentPartText {
   text: string;
@@ -33,8 +33,24 @@ interface UserMessageContentPartImage {
   };
   type: 'image_url';
 }
+interface UserMessageContentPartVideo {
+  type: 'video_url';
+  video_url: {
+    url: string;
+  };
+}
+interface UserMessageContentPartAudio {
+  audio_url: {
+    url: string;
+  };
+  type: 'audio_url';
+}
 
-export type UserMessageContentPart = UserMessageContentPartText | UserMessageContentPartImage;
+export type UserMessageContentPart =
+  | UserMessageContentPartAudio
+  | UserMessageContentPartImage
+  | UserMessageContentPartText
+  | UserMessageContentPartVideo;
 
 export interface OpenAIChatMessage {
   /**

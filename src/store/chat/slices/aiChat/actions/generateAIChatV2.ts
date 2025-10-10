@@ -26,6 +26,7 @@ import type { ChatStore } from '@/store/chat/store';
 import { getFileStoreState } from '@/store/file/store';
 import { getSessionStoreState } from '@/store/session';
 import { WebBrowsingManifest } from '@/tools/web-browsing';
+import { ChatAudioItem } from '@/types/message/audio';
 import { ChatImageItem } from '@/types/message/image';
 import { ChatVideoItem } from '@/types/message/video';
 import { setNamespace } from '@/utils/storeDebug';
@@ -126,6 +127,13 @@ export const generateAIChatV2: StateCreator<
         url: f.fileUrl || f.base64Url || f.previewUrl || '',
         alt: f.file?.name || f.id,
       }));
+    const tempAudios: ChatAudioItem[] = filesInStore
+      .filter((f) => f.file?.type?.startsWith('audio'))
+      .map((f) => ({
+        id: f.id,
+        url: f.fileUrl || f.base64Url || f.previewUrl || '',
+        alt: f.file?.name || f.id,
+      }));
 
     // use optimistic update to avoid the slow waiting
     const tempId = get().internal_createTmpMessage({
@@ -139,6 +147,7 @@ export const generateAIChatV2: StateCreator<
       threadId: activeThreadId,
       imageList: tempImages.length > 0 ? tempImages : undefined,
       videoList: tempVideos.length > 0 ? tempVideos : undefined,
+      audioList: tempAudios.length > 0 ? tempAudios : undefined,
     });
     get().internal_toggleMessageLoading(true, tempId);
 
@@ -168,9 +177,9 @@ export const generateAIChatV2: StateCreator<
           threadId: activeThreadId,
           newTopic: !activeTopicId
             ? {
-                topicMessageIds: messages.map((m) => m.id),
-                title: t('defaultTitle', { ns: 'topic' }),
-              }
+              topicMessageIds: messages.map((m) => m.id),
+              title: t('defaultTitle', { ns: 'topic' }),
+            }
             : undefined,
           sessionId: activeId === INBOX_SESSION_ID ? undefined : activeId,
           newAssistantMessage: { model, provider: provider! },

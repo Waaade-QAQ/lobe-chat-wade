@@ -95,11 +95,20 @@ export const useSend = () => {
     // 获取分析数据
     const userStore = getUserStoreState();
 
-    // 直接使用现有数据结构判断消息类型（支持 video）
+    // 直接使用现有数据结构判断消息类型（支持 video 和 audio）
     const hasImages = fileList.some((file) => file.file?.type?.startsWith('image'));
     const hasVideos = fileList.some((file) => file.file?.type?.startsWith('video'));
+    const hasAudios = fileList.some((file) => file.file?.type?.startsWith('audio'));
     const messageType =
-      fileList.length === 0 ? 'text' : hasVideos ? 'video' : hasImages ? 'image' : 'file';
+      fileList.length === 0
+        ? 'text'
+        : hasAudios
+          ? 'audio'
+          : hasVideos
+            ? 'video'
+            : hasImages
+              ? 'image'
+              : 'file';
 
     analytics?.track({
       name: 'send_message',

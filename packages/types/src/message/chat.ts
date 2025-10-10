@@ -2,6 +2,7 @@ import { UploadFileItem } from '../files';
 import { MetaData } from '../meta';
 import { MessageSemanticSearchChunk } from '../rag';
 import { GroundingSearch } from '../search';
+import { ChatAudioItem } from './audio';
 import type { ChatMessageError, MessageMetadata, MessageRoleType, ModelReasoning } from './base';
 import { ChatImageItem } from './image';
 import { ChatPluginPayload, ChatToolPayload } from './tools';
@@ -47,6 +48,7 @@ export interface ChatMessageExtra {
 }
 
 export interface AssistantContentBlock {
+  audioList?: ChatAudioItem[];
   content: string;
   fileList?: ChatFileItem[];
   id: string;
@@ -57,6 +59,7 @@ export interface AssistantContentBlock {
 export interface ChatMessage {
   // Group chat fields (alphabetically before other fields)
   agentId?: string | 'supervisor';
+  audioList?: ChatAudioItem[];
   /**
    * children messages for grouped display
    * Used to group tool messages under their parent assistant message
