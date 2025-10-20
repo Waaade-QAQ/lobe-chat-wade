@@ -49,7 +49,6 @@ export const buildGooglePart = async (
 
       throw new TypeError(`currently we don't support image url: ${content.image_url.url}`);
     }
-
     case 'video_url': {
       const { mimeType, base64, type } = parseDataUri(content.video_url.url);
 
