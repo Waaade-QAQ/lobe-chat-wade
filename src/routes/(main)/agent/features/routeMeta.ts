@@ -51,14 +51,11 @@ export const agentRouteMeta = routeMeta({
   titleKey: 'navigation.chat',
   useDynamicMeta: (params): DynamicRouteMeta => {
     const meta = useAgentStore(agentSelectors.getAgentMetaById(params.aid ?? ''));
-    const topicTitle = useTopicTitle(params.topicId);
-    const hasMeta = Object.keys(meta).length > 0;
-    const agentTitle = hasMeta ? meta.title : undefined;
 
     return {
       avatar: meta.avatar,
       backgroundColor: meta.backgroundColor,
-      title: [topicTitle, agentTitle].filter(Boolean).join(' · ') || undefined,
+      title: 'AI对话',
     };
   },
 });

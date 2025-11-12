@@ -47,12 +47,8 @@ export const groupRouteMeta = routeMeta({
   icon: Users,
   titleKey: 'navigation.groupChat',
   useDynamicMeta: (params): DynamicRouteMeta => {
-    const [searchParams] = useSearchParams();
-    const group = useSessionStore(sessionGroupSelectors.getGroupById(params.gid ?? ''));
-    const topicTitle = useTopicTitle(searchParams.get('topic'));
-
     return {
-      title: topicTitle || group?.name || undefined,
+      title: 'AI对话',
     };
   },
 });

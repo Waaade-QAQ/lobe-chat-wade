@@ -82,7 +82,11 @@ const RouteMetaBridge = memo(() => {
   }, [matchedRouteId, publishRouteMeta, setCurrentRouteMeta]);
 
   useEffect(() => {
-    document.title = title ? `${title} · ${BRANDING_NAME}` : BRANDING_NAME;
+    if (title === 'AI对话') {
+      document.title = 'AI对话';
+    } else {
+      document.title = title ? `${title} · ${BRANDING_NAME}` : BRANDING_NAME;
+    }
   }, [title]);
 
   if (!matched) return null;
