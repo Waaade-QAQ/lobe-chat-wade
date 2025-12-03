@@ -9,6 +9,8 @@ import {
 } from '@google/genai';
 import debug from 'debug';
 
+import { imageUrlToBase64 } from '@/utils/imageToBase64';
+
 import { LobeRuntimeAI } from '../../core/BaseAI';
 import { buildGoogleTools } from '../../core/contextBuilders/google';
 import { GoogleGenerativeAIStream, VertexAIStream } from '../../core/streams';
@@ -28,7 +30,6 @@ import { AgentRuntimeError } from '../../utils/createError';
 import { debugStream } from '../../utils/debugStream';
 import { getModelPricing } from '../../utils/getModelPricing';
 import { parseGoogleErrorMessage } from '../../utils/googleErrorParser';
-import { imageUrlToBase64 } from '../../utils/imageToBase64';
 import { StreamingResponse } from '../../utils/response';
 import { safeParseJSON } from '../../utils/safeParseJSON';
 import { parseDataUri } from '../../utils/uriParser';
@@ -210,7 +211,7 @@ export class LobeGoogleAI implements LobeRuntimeAI {
         includeThoughts:
           (!!thinkingBudget ||
             (model && (model.includes('-2.5-') || model.includes('thinking')))) &&
-            resolvedThinkingBudget !== 0
+          resolvedThinkingBudget !== 0
             ? true
             : undefined,
         thinkingBudget: resolvedThinkingBudget,
@@ -549,7 +550,9 @@ export class LobeGoogleAI implements LobeRuntimeAI {
         // refs: https://ai.google.dev/api/files
         const uploadUrl = `${this.baseURL?.replace(/\/$/, '')}/upload/v1beta/files?uploadType=multipart&key=${this.apiKey}`;
 
-        const metadata = { file: { displayName: content.file_url.displayName || 'media', mimeType } };
+        const metadata = {
+          file: { displayName: content.file_url.displayName || 'media', mimeType },
+        };
 
         // fetch binary
         const mediaRes = await fetch(url);
@@ -559,7 +562,9 @@ export class LobeGoogleAI implements LobeRuntimeAI {
         // Build multipart body
         const boundary = `----lobe-google-${Math.random().toString(36).slice(2)}`;
         const encoder = new TextEncoder();
-        const part1 = encoder.encode(`--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify(metadata)}\r\n`);
+        const part1 = encoder.encode(
+          `--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify(metadata)}\r\n`,
+        );
         const part2Header = encoder.encode(`--${boundary}\r\nContent-Type: ${mimeType}\r\n\r\n`);
         const part3 = encoder.encode(`\r\n--${boundary}--`);
 
