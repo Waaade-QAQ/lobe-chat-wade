@@ -10,6 +10,7 @@ const THINKING_MODELS = [
   'doubao-seed-1-6',
   'doubao-1-5-ui-tars',
   'deepseek-v3-1',
+  'deepseek-v3-2',
 ];
 
 export interface VolcengineModelCard {
@@ -27,8 +28,8 @@ export const LobeVolcengineAI = createOpenAICompatibleRuntime({
         model,
         ...(THINKING_MODELS.some((keyword) => model.toLowerCase().includes(keyword))
           ? {
-              thinking: { type: thinking?.type },
-            }
+            thinking: { type: thinking?.type },
+          }
           : {}),
       } as any;
     },
