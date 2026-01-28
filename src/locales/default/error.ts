@@ -13,7 +13,7 @@ export default {
   'inviteCode.continue': 'Continue',
   'inviteCode.currentEmail': 'Current account: {{email}}',
   'inviteCode.desc':
-    'An invite code is required to access LobeHub. Please enter a valid invite code to continue.',
+    'An invite code is required to access 糯米世界. Please enter a valid invite code to continue.',
   'inviteCode.friends': 'Ask a friend',
   'inviteCode.joinUsOn': 'Join us on',
   'inviteCode.lookingForInvite': 'Looking for an invite?',
