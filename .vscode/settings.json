@@ -10,9 +10,16 @@
     { "rule": "simple-import-sort/exports", "severity": "off" },
     { "rule": "perfectionist/sort-interfaces", "severity": "off" },
     { "rule": "simple-import-sort/imports", "severity": "off" }
+    // { "rule": "import/order", "severity": "off" },
+    // { "rule": "prettier/prettier", "severity": "off" },
+    // { "rule": "react/jsx-sort-props", "severity": "off" },
+    // { "rule": "sort-keys-fix/sort-keys-fix", "severity": "off" },
+    // { "rule": "simple-import-sort/exports", "severity": "off" },
+    // { "rule": "typescript-sort-keys/interface", "severity": "off" }
   ],
   "eslint.validate": [
-    "json",
+    // vscode eslint not 插件兼容性有问题
+    // "json",
     "javascript",
     "javascriptreact",
     "typescript",
