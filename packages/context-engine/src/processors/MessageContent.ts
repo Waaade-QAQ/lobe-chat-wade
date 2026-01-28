@@ -65,6 +65,11 @@ export interface MessageContentConfig {
 }
 
 export interface UserMessageContentPart {
+  file_url?: {
+    displayName?: string;
+    mimeType: string;
+    url: string;
+  };
   googleThoughtSignature?: string;
   image_url?: {
     detail?: string;
@@ -73,7 +78,7 @@ export interface UserMessageContentPart {
   signature?: string;
   text?: string;
   thinking?: string;
-  type: 'text' | 'image_url' | 'thinking' | 'video_url';
+  type: 'text' | 'image_url' | 'file_url' | 'thinking' | 'video_url';
   video_url?: {
     url: string;
   };
@@ -248,8 +253,67 @@ export class MessageContentProcessor extends BaseProcessor {
       }
     }
 
-    // Process video content
-    if (hasVideos && canUseVideo) {
+    // Process audio/video files for Google Gemini via file_url parts
+    if (this.config.provider === 'google') {
+      const guessMimeFromName = (nameOrUrl: string): string | undefined => {
+        const lower = (nameOrUrl || '').toLowerCase();
+        if (lower.endsWith('.m4a')) return 'audio/aac';
+        if (lower.endsWith('.mp3')) return 'audio/mp3';
+        if (lower.endsWith('.wav')) return 'audio/wav';
+        if (lower.endsWith('.flac')) return 'audio/flac';
+        if (lower.endsWith('.ogg')) return 'audio/ogg';
+        if (lower.endsWith('.aiff') || lower.endsWith('.aif')) return 'audio/aiff';
+        if (lower.endsWith('.mp4')) return 'video/mp4';
+        if (lower.endsWith('.mov') || lower.endsWith('.qt')) return 'video/quicktime';
+        if (lower.endsWith('.avi')) return 'video/avi';
+        if (lower.endsWith('.wmv')) return 'video/wmv';
+        if (lower.endsWith('.webm')) return 'video/webm';
+        if (lower.endsWith('.mpeg') || lower.endsWith('.mpg')) return 'video/mpeg';
+        if (lower.endsWith('.3gp') || lower.endsWith('.3gpp')) return 'video/3gpp';
+        if (lower.endsWith('.flv')) return 'video/x-flv';
+        return undefined;
+      };
+
+      // 1) from fileList
+      if (hasFiles) {
+        for (const f of message.fileList || []) {
+          const rawMime = (f.fileType || '').toLowerCase();
+          const nameOrUrl = f.name || f.url || '';
+          const guessMime = guessMimeFromName(nameOrUrl);
+          const mimeType = rawMime || guessMime || 'application/octet-stream';
+          const isAudio = mimeType.startsWith('audio/');
+          const isVideo = mimeType.startsWith('video/');
+          if (isAudio || isVideo) {
+            contentParts.push({
+              file_url: {
+                displayName: f.name,
+                mimeType,
+                url: f.url,
+              },
+              type: 'file_url',
+            });
+          }
+        }
+      }
+
+      // 2) from videoList (videos are often separated from generic fileList)
+      if (hasVideos && Array.isArray(message.videoList)) {
+        for (const v of message.videoList as Array<{ alt?: string, id?: string; url: string; }>) {
+          const nameOrUrl = (v as any).name || v.url || '';
+          const guessMime = guessMimeFromName(nameOrUrl);
+          const mimeType = guessMime || 'video/mp4';
+          contentParts.push({
+            file_url: {
+              displayName: (v as any).name || v.alt || nameOrUrl.split('/').pop() || 'video',
+              mimeType,
+              url: v.url,
+            },
+            type: 'file_url',
+          });
+        }
+      }
+    } else if (hasVideos && canUseVideo) {
+      // Process video content for providers that support video_url parts
       const videoContentParts = await this.processVideoList(message.videoList || []);
       contentParts.push(...videoContentParts);
     }
@@ -515,6 +579,9 @@ export class MessageContentProcessor extends BaseProcessor {
       }
       case 'image_url': {
         return !!(part.image_url && part.image_url.url);
+      }
+      case 'file_url': {
+        return !!(part.file_url && part.file_url.url && part.file_url.mimeType);
       }
       case 'thinking': {
         return !!(part.thinking && part.signature);

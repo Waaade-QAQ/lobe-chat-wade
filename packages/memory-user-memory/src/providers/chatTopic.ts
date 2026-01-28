@@ -72,9 +72,6 @@ export class LobeChatTopicContextProvider implements MemoryContextProvider<
               if (part.type === 'image_url') {
                 return `[Image: ${part.image_url.url}]`;
               }
-              if (part.type === 'video_url') {
-                return `[Video: ${part.video_url.url}]`;
-              }
               return '';
             })
             .join('\n')
