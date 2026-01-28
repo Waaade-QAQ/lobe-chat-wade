@@ -77,34 +77,6 @@ export const buildGooglePart = async (
 
       throw new TypeError(`currently we don't support image url: ${content.image_url.url}`);
     }
-
-    case 'video_url': {
-      const { mimeType, base64, type } = parseDataUri(content.video_url.url);
-
-      if (type === 'base64') {
-        if (!base64) {
-          throw new TypeError("Video URL doesn't contain base64 data");
-        }
-
-        return {
-          inlineData: { data: base64, mimeType: mimeType || 'video/mp4' },
-          thoughtSignature: GEMINI_MAGIC_THOUGHT_SIGNATURE,
-        };
-      }
-
-      if (type === 'url') {
-        // Use imageUrlToBase64 for SSRF protection (works for any binary data including videos)
-        // Note: This might need size/duration limits for practical use
-        const { base64, mimeType } = await imageUrlToBase64(content.video_url.url);
-
-        return {
-          inlineData: { data: base64, mimeType },
-          thoughtSignature: GEMINI_MAGIC_THOUGHT_SIGNATURE,
-        };
-      }
-
-      throw new TypeError(`currently we don't support video url: ${content.video_url.url}`);
-    }
   }
 };
 
