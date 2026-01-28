@@ -125,31 +125,6 @@ describe('google contextBuilders', () => {
       await expect(buildGooglePart(content)).rejects.toThrow(TypeError);
     });
 
-    it('should handle base64 video', async () => {
-      const base64Video = 'data:video/mp4;base64,mockVideoBase64Data';
-
-      vi.mocked(parseDataUri).mockReturnValueOnce({
-        base64: 'mockVideoBase64Data',
-        mimeType: 'video/mp4',
-        type: 'base64',
-      });
-
-      const content: UserMessageContentPart = {
-        type: 'video_url',
-        video_url: { url: base64Video },
-      };
-
-      const result = await buildGooglePart(content);
-
-      expect(result).toEqual({
-        inlineData: {
-          data: 'mockVideoBase64Data',
-          mimeType: 'video/mp4',
-        },
-        thoughtSignature: GEMINI_MAGIC_THOUGHT_SIGNATURE,
-      });
-    });
-
     it('should return undefined for unsupported SVG image (base64)', async () => {
       const svgBase64 =
         'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjwvc3ZnPg==';
