@@ -14,8 +14,8 @@ const manifest = async (): Promise<MetadataRoute.Manifest> => {
           type: 'image/png',
         },
       ],
-      name: 'LobeHub',
-      short_name: 'LobeHub',
+      name: '糯米世界',
+      short_name: '糯米世界',
       start_url: '/',
       theme_color: '#000000',
     };
