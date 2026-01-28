@@ -295,7 +295,7 @@ export default {
   'marketPublish.upload.tooltip': 'Publish a new version to Agent Community',
   'marketPublish.uploadGroup.tooltip': 'Publish a new version to Group Community',
   'memory.enabled.desc':
-    'Allow LobeHub to extract preferences and info from conversations and use them later. You can view, edit, or clear memory anytime.',
+    'Allow 糯米世界 to extract preferences and info from conversations and use them later. You can view, edit, or clear memory anytime.',
   'memory.enabled.title': 'Enable Memory',
   'memory.title': 'Memory Settings',
   'message.success': 'Update successful',
@@ -605,7 +605,7 @@ export default {
   'skillStore.search': 'Search skills by name or keyword, press Enter to search…',
   'skillStore.tabs.community': 'Community',
   'skillStore.tabs.custom': 'Custom',
-  'skillStore.tabs.lobehub': 'LobeHub',
+  'skillStore.tabs.lobehub': '糯米世界',
   'skillStore.title': 'Skill Store',
   'startConversation': 'Start Conversation',
   'storage.actions.export.button': 'Export',
@@ -893,7 +893,7 @@ export default {
   'tools.lobehubSkill.disconnected': 'Disconnected',
 
   'tools.lobehubSkill.error': 'Error',
-  // LobeHub Skill Providers i18n
+  // 糯米世界 Skill Providers i18n
   'tools.lobehubSkill.providers.linear.description':
     'Linear is a modern issue tracking and project management tool designed for high-performance teams to build better software faster',
   'tools.lobehubSkill.providers.linear.introduction':
