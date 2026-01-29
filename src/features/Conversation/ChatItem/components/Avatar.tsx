@@ -49,7 +49,7 @@ const Avatar = memo<AvatarProps>(
       <A
         alt={alt || avatar.title}
         animation={loading}
-        avatar={avatar.avatar}
+        avatar={loading ? '/images/ai-avatar-dog.png' : avatar.avatar}
         background={avatar.backgroundColor}
         className={loading ? styles.thinking : undefined}
         shape={'square'}
