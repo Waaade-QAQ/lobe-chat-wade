@@ -1,4 +1,8 @@
-import { BRANDING_PROVIDER, ENABLE_BUSINESS_FEATURES } from '@lobechat/business-const';
+import {
+  BRANDING_PROVIDER,
+  DEFAULT_MINI_PROVIDER,
+  ENABLE_BUSINESS_FEATURES,
+} from '@lobechat/business-const';
 import {
   DEFAULT_SEARCH_USER_MEMORY_TOP_K,
   DEFAULT_USER_MEMORY_EMBEDDING_MODEL_ITEM,
@@ -43,7 +47,7 @@ import {
 } from '@/database/schemas';
 import { authedProcedure, router } from '@/libs/trpc/lambda';
 import { serverDatabase } from '@/libs/trpc/lambda/middleware';
-import { getServerDefaultFilesConfig } from '@/server/globalConfig';
+import { parseMemoryExtractionConfig } from '@/server/globalConfig/parseMemoryExtractionConfig';
 import { initModelRuntimeFromDB } from '@/server/modules/ModelRuntime';
 import type { UserMemoryEmbeddingRuntime } from '@/server/services/memory/userMemory/embedding';
 import { embedUserMemoryTexts } from '@/server/services/memory/userMemory/embedding';
@@ -120,12 +124,15 @@ const searchUserMemories = async (
   input: z.infer<typeof searchMemorySchema>,
 ): Promise<SearchMemoryResult> => {
   const normalizedInput = normalizeSearchMemoryParams(input);
-  const { provider, model: embeddingModel } =
-    getServerDefaultFilesConfig().embeddingModel || DEFAULT_USER_MEMORY_EMBEDDING_MODEL_ITEM;
-  const modelRuntime = await initModelRuntimeFromDB(ctx.serverDB, ctx.userId, provider);
   const normalizedQueries = [
     ...new Set((normalizedInput.queries ?? []).map((query) => query.trim()).filter(Boolean)),
   ];
+  const { provider, model: embeddingModel } = parseMemoryExtractionConfig().embedding;
+  const modelRuntime = await initModelRuntimeFromDB(
+    ctx.serverDB,
+    ctx.userId,
+    provider || DEFAULT_MINI_PROVIDER,
+  );
 
   const queryEmbeddings =
     normalizedQueries.length > 0
@@ -161,13 +168,12 @@ const searchUserMemories = async (
 };
 
 const getEmbeddingRuntime = async (serverDB: LobeChatDatabase, userId: string) => {
-  const { provider, model: embeddingModel } =
-    getServerDefaultFilesConfig().embeddingModel || DEFAULT_USER_MEMORY_EMBEDDING_MODEL_ITEM;
+  const { provider, model: embeddingModel } = parseMemoryExtractionConfig().embedding;
   // Read user's provider config from database
   const agentRuntime = await initModelRuntimeFromDB(
     serverDB,
     userId,
-    ENABLE_BUSINESS_FEATURES ? BRANDING_PROVIDER : provider,
+    ENABLE_BUSINESS_FEATURES ? BRANDING_PROVIDER : provider || DEFAULT_MINI_PROVIDER,
   );
 
   return { agentRuntime, embeddingModel };
@@ -1149,7 +1155,7 @@ export const userMemoriesRouter = router({
 
         const summaryEmbedding = await embed(input.summary);
         const detailsEmbedding = await embed(input.details);
-        const descriptionEmbedding = await embed(input.withIdentity.description);
+        const descriptionEmbedding = await embed(input.withIdentity.description || input.summary);
 
         const identityMetadata: Record<string, unknown> = {};
         if (
@@ -1179,7 +1185,7 @@ export const userMemoriesRouter = router({
             title: input.title,
           },
           identity: {
-            description: input.withIdentity.description,
+            description: input.withIdentity.description ?? null,
             descriptionVector: descriptionEmbedding ?? null,
             episodicDate: input.withIdentity.episodicDate,
             metadata: Object.keys(identityMetadata).length > 0 ? identityMetadata : undefined,
