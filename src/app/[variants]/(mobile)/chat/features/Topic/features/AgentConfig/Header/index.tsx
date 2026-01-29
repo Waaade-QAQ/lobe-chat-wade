@@ -14,7 +14,7 @@ const HeaderInfo = memo(() => {
   const isInbox = useSessionStore(sessionSelectors.isInboxSession);
   const title = useAgentStore(agentSelectors.currentAgentTitle);
 
-  const displayTitle = isInbox ? 'Lobe AI' : title;
+  const displayTitle = isInbox ? '糯米AI' : title;
 
   return (
     <Flexbox

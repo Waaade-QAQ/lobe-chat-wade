@@ -67,7 +67,7 @@ const TelemetryStep = memo<TelemetryStepProps>(({ onNext }) => {
             key={locale}
             pauseDuration={16_000}
             sentences={[
-              t('telemetry.title', { name: 'Lobe AI' }),
+              t('telemetry.title', { name: '糯米AI' }),
               t('telemetry.title2'),
               t('telemetry.title3'),
             ]}
