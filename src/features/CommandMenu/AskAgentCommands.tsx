@@ -55,20 +55,20 @@ const AskAgentCommands = memo(() => {
   if (!isAtMention) return null;
 
   // Check if Lobe AI matches the query
-  const showLobeAI = !mentionQuery || 'lobe ai'.includes(mentionQuery);
+  const showLobeAI = !mentionQuery || '糯米ai'.includes(mentionQuery);
 
   return (
     <Command.Group heading={t('cmdk.mentionAgent')}>
       {/* @Lobe AI option */}
       {showLobeAI && (
         <Command.Item
+          onSelect={() => handleAgentSelect(inboxAgentId, '糯米AI', DEFAULT_INBOX_AVATAR)}
           value="@lobe-ai"
           onMouseDown={preventDefault}
-          onSelect={() => handleAgentSelect(inboxAgentId, 'Lobe AI', DEFAULT_INBOX_AVATAR)}
         >
           <Avatar emojiScaleWithBackground avatar={DEFAULT_INBOX_AVATAR} shape="square" size={18} />
           <div className={styles.itemContent}>
-            <div className={styles.itemLabel}>@Lobe AI</div>
+            <div className={styles.itemLabel}>@糯米AI</div>
           </div>
         </Command.Item>
       )}
