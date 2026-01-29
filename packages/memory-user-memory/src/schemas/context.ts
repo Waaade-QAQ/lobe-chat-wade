@@ -54,6 +54,7 @@ export const WithContextSchema = z.object({
     ),
   description: z
     .string()
+    .optional()
     .describe('Rich narrative describing the situation, timeline, or environment'),
   labels: z.array(z.string()).describe('Model generated tags that summarize the context themes'),
   scoreImpact: z
