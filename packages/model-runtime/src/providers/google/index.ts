@@ -571,6 +571,7 @@ export class LobeGoogleAI implements LobeRuntimeAI {
             args: safeParseJSON(tool.function.arguments)!,
             name: tool.function.name,
           },
+          thoughtSignature: tool.thoughtSignature,
         })),
         role: 'model',
       };
