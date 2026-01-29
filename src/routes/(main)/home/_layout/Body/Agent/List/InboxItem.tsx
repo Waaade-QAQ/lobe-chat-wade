@@ -22,7 +22,7 @@ const InboxItem = memo<InboxItemProps>(({ className, style }) => {
   const inboxMeta = useAgentStore(agentSelectors.getAgentMetaById(inboxAgentId!));
 
   const isLoading = useChatStore(operationSelectors.isAgentRuntimeRunning);
-  const inboxAgentTitle = inboxMeta.title || 'Lobe AI';
+  const inboxAgentTitle = inboxMeta.title || '糯米AI';
   const inboxAgentAvatar = inboxMeta.avatar || DEFAULT_INBOX_AVATAR;
 
   return (

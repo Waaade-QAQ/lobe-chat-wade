@@ -34,7 +34,7 @@ const InboxWelcome = memo(() => {
     return agentSystemRoleMsg;
   }, [openingMessage, agentSystemRoleMsg, meta.description]);
 
-  const inboxTitle = meta.title || 'Lobe AI';
+  const inboxTitle = meta.title || '糯米AI';
   const displayTitle = isInbox ? inboxTitle : meta.title || t('defaultSession', { ns: 'common' });
 
   return (
