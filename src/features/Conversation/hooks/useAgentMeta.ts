@@ -1,3 +1,4 @@
+import { DEFAULT_INBOX_AVATAR } from '@lobechat/const';
 import { type MetaData } from '@lobechat/types';
 import { useMemo } from 'react';
 
@@ -30,8 +31,12 @@ export const useAgentMeta = (messageAgentId?: string | null): MetaData => {
     const isBuiltinAgent = builtinAgentIds.includes(agentId);
 
     if (isBuiltinAgent) {
-      // Use DB-stored title if customized (e.g. via onboarding), otherwise fallback to Lobe AI
-      return { ...agentMeta, title: agentMeta.title || LOBE_AI_TITLE };
+      // Preserve customized builtin titles while ensuring the inbox avatar always has a fallback.
+      return {
+        ...agentMeta,
+        avatar: agentMeta.avatar || DEFAULT_INBOX_AVATAR,
+        title: agentMeta.title || LOBE_AI_TITLE,
+      };
     }
 
     return agentMeta;
