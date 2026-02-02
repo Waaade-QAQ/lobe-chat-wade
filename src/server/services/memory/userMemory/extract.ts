@@ -326,9 +326,23 @@ export const resolveRuntimeAgentConfig = (
       return ModelRuntime.initializeWithProvider(provider, {});
     }
 
-    const { apiKey: userApiKey, baseURL: userBaseURL } = extractCredentialsFromVault(
+    let { apiKey: userApiKey, baseURL: userBaseURL } = extractCredentialsFromVault(
       keyVaults?.[provider],
     );
+
+    let source: 'user-vault' | 'system-config' = 'user-vault';
+
+    // Fallback to environment variables if key is missing in user vault
+    if (!userApiKey) {
+      // Try to find API Key from environment variables
+      // e.g. GOOGLE_API_KEY, OPENAI_API_KEY
+      const envKey = process.env[`${provider.toUpperCase()}_API_KEY`];
+      if (envKey) {
+        userApiKey = envKey;
+        source = 'system-config';
+      }
+    }
+
     if (!userApiKey) {
       console.warn(
         `[memory-extraction] skipping provider ${provider} due to missing API key in user vault`,
@@ -340,7 +354,7 @@ export const resolveRuntimeAgentConfig = (
       apiKey: userApiKey,
       baseURL: userBaseURL,
       provider,
-      source: 'user-vault' as const,
+      source,
     });
 
     // Only use the user baseURL if we are also using their API key; otherwise fall back entirely
