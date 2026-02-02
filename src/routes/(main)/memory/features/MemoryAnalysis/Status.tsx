@@ -2,21 +2,23 @@
 
 import { AsyncTaskStatus } from '@lobechat/types';
 import { Alert, Flexbox, Icon, Text } from '@lobehub/ui';
-import { Progress } from 'antd';
+import { Button, Progress } from 'antd';
 import { Loader2Icon, TriangleAlertIcon } from 'lucide-react';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { type MemoryExtractionTask } from '@/services/userMemory/extraction';
+import type { MemoryExtractionTask } from '@/services/userMemory/extraction';
+import { memoryExtractionService } from '@/services/userMemory/extraction';
 
 import { useMemoryAnalysisAsyncTask } from './useTask';
 
 interface StatusProps {
+  onRefresh?: () => void;
   task?: MemoryExtractionTask | null;
 }
 
-export const MemoryAnalysisStatus = memo<StatusProps>(({ task }) => {
-  const { t } = useTranslation('memory');
+export const MemoryAnalysisStatus = memo<StatusProps>(({ task, onRefresh }) => {
+  const { t } = useTranslation(['memory', 'common']);
   const data = task;
 
   const status = data?.status;
@@ -45,9 +47,20 @@ export const MemoryAnalysisStatus = memo<StatusProps>(({ task }) => {
       : body && typeof body === 'object' && 'detail' in body && typeof body.detail === 'string'
         ? body.detail
         : (data.error?.name ?? t('analysis.status.errorTitle'));
+  const handleCancel = async () => {
+    if (data?.id) {
+      await memoryExtractionService.cancelTask(data.id);
+      onRefresh?.();
+    }
+  };
 
   return (
     <Alert
+      action={
+        <Button onClick={handleCancel} size={'small'} type={'text'}>
+          {t('cancel', { ns: 'common' })}
+        </Button>
+      }
       icon={<Icon icon={isError ? TriangleAlertIcon : Loader2Icon} spin={isRunning && !isError} />}
       title={isError ? t('analysis.status.errorTitle') : t('analysis.status.title')}
       type={isError ? 'error' : 'info'}
@@ -74,9 +87,9 @@ export const MemoryAnalysisStatus = memo<StatusProps>(({ task }) => {
 MemoryAnalysisStatus.displayName = 'MemoryAnalysisStatus';
 
 const Status = memo(() => {
-  const { data } = useMemoryAnalysisAsyncTask();
+  const { data, refresh } = useMemoryAnalysisAsyncTask();
 
-  return <MemoryAnalysisStatus task={data} />;
+  return <MemoryAnalysisStatus onRefresh={refresh} task={data} />;
 });
 
 Status.displayName = 'MemoryAnalysisStatusWithData';

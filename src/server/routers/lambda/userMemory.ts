@@ -74,6 +74,14 @@ const getUserMemoryExtractionTimeoutMs = (metadata: UserMemoryExtractionMetadata
 };
 
 export const userMemoryRouter = router({
+
+  cancelMemoryExtractionTask: userMemoryProcedure
+    .input(z.object({ taskId: z.string().uuid() }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.asyncTaskModel.delete(input.taskId);
+    }),
+
+
   // ============ Identity CRUD ============
   createIdentity: userMemoryProcedure
     .input(CreateUserMemoryIdentitySchema)
@@ -90,6 +98,7 @@ export const userMemoryRouter = router({
         },
       });
     }),
+
 
   // ============ Activity CRUD ============
   deleteActivity: userMemoryProcedure
@@ -153,8 +162,8 @@ export const userMemoryRouter = router({
       const task = input?.taskId
         ? await ctx.asyncTaskModel.findById(input.taskId)
         : await ctx.asyncTaskModel.findActiveByType(
-            AsyncTaskType.UserMemoryExtractionWithChatTopic,
-          );
+          AsyncTaskType.UserMemoryExtractionWithChatTopic,
+        );
 
       if (!task || task.userId !== ctx.userId) return null;
 
@@ -211,7 +220,6 @@ export const userMemoryRouter = router({
       summary: latest.tagline ?? '',
     };
   }),
-
   getPreferences: userMemoryProcedure.query(async ({ ctx }) => {
     return ctx.userMemoryModel.searchPreferences({});
   }),
