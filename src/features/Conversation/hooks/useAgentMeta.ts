@@ -1,3 +1,4 @@
+import { DEFAULT_INBOX_AVATAR } from '@lobechat/const';
 import { type MetaData } from '@lobechat/types';
 import { useMemo } from 'react';
 
@@ -31,7 +32,7 @@ export const useAgentMeta = (messageAgentId?: string | null): MetaData => {
 
     if (isBuiltinAgent) {
       // Use avatar from backend (merged from builtin-agents package), only override title
-      return { ...agentMeta, title: LOBE_AI_TITLE };
+      return { ...agentMeta, avatar: DEFAULT_INBOX_AVATAR, title: LOBE_AI_TITLE };
     }
 
     return agentMeta;
