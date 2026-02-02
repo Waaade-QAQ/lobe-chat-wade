@@ -43,7 +43,20 @@ export const fileRouter = router({
     .use(checkFileStorageUsage)
     .input(z.object({ hash: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      return ctx.fileModel.checkHash(input.hash);
+      const result = await ctx.fileModel.checkHash(input.hash);
+
+      // If the file exists in the DB, we need to double-check if the file exists in the S3
+      if (result.isExist && result.url) {
+        try {
+          // If the file metadata is invalid (e.g. file not found), it will throw an error
+          // Then we should treat it as not exist
+          await ctx.fileService.getFileMetadata(result.url);
+        } catch {
+          return { isExist: false };
+        }
+      }
+
+      return result;
     }),
 
   createFile: fileProcedure
