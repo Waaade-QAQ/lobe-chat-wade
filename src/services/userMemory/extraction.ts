@@ -1,7 +1,7 @@
-import {
-  type AsyncTaskStatus,
-  type IAsyncTaskError,
-  type UserMemoryExtractionMetadata,
+import type {
+  AsyncTaskStatus,
+  IAsyncTaskError,
+  UserMemoryExtractionMetadata,
 } from '@lobechat/types';
 
 import { lambdaClient } from '@/libs/trpc/client';
@@ -33,6 +33,10 @@ class MemoryExtractionService {
     return lambdaClient.userMemory.getMemoryExtractionTask.query(
       taskId ? { taskId } : undefined,
     ) as Promise<MemoryExtractionTask | null>;
+  };
+
+  cancelTask = async (taskId: string): Promise<void> => {
+    await lambdaClient.userMemory.cancelMemoryExtractionTask.mutate({ taskId });
   };
 }
 
