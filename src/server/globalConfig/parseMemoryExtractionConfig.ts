@@ -85,11 +85,18 @@ const parseGateKeeperAgent = (): MemoryAgentConfig => {
   };
 };
 
-const parseLayerExtractorAgent = (fallbackModel: string): MemoryLayerExtractorConfig => {
-  const apiKey = process.env.MEMORY_USER_MEMORY_LAYER_EXTRACTOR_API_KEY;
+const parseLayerExtractorAgent = (
+  fallbackModel: string,
+  fallbackProvider?: string,
+  fallbackApiKey?: string,
+): MemoryLayerExtractorConfig => {
+  const apiKey = process.env.MEMORY_USER_MEMORY_LAYER_EXTRACTOR_API_KEY || fallbackApiKey;
   const baseURL = process.env.MEMORY_USER_MEMORY_LAYER_EXTRACTOR_BASE_URL;
   const model = process.env.MEMORY_USER_MEMORY_LAYER_EXTRACTOR_MODEL || fallbackModel;
-  const provider = process.env.MEMORY_USER_MEMORY_LAYER_EXTRACTOR_PROVIDER || DEFAULT_MINI_PROVIDER;
+  const provider =
+    process.env.MEMORY_USER_MEMORY_LAYER_EXTRACTOR_PROVIDER ||
+    fallbackProvider ||
+    DEFAULT_MINI_PROVIDER;
   const contextLimit = parseTokenLimitEnv(
     process.env.MEMORY_USER_MEMORY_LAYER_EXTRACTOR_CONTEXT_LIMIT,
   );
@@ -201,8 +208,16 @@ const parsePreferredList = (value?: string) =>
 
 export const parseMemoryExtractionConfig = (): MemoryExtractionPrivateConfig => {
   const agentGateKeeper = parseGateKeeperAgent();
-  const agentLayerExtractor = parseLayerExtractorAgent(agentGateKeeper.model);
-  const agentPersonaWriter = parsePersonaWriterAgent(agentGateKeeper.model);
+  const agentLayerExtractor = parseLayerExtractorAgent(
+    agentGateKeeper.model,
+    agentGateKeeper.provider,
+    agentGateKeeper.apiKey,
+  );
+  const agentPersonaWriter = parsePersonaWriterAgent(
+    agentGateKeeper.model,
+    agentGateKeeper.provider,
+    agentGateKeeper.apiKey,
+  );
   const embedding = parseEmbeddingAgent(
     agentLayerExtractor.model,
     agentLayerExtractor.provider || DEFAULT_MINI_PROVIDER,
