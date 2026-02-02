@@ -5,7 +5,6 @@ import pMap from 'p-map';
 import { z } from 'zod';
 
 import { checkBudgetsUsage, checkEmbeddingUsage } from '@/business/server/trpc-middlewares/async';
-import { serverDBEnv } from '@/config/db';
 import { DEFAULT_FILE_EMBEDDING_MODEL_ITEM } from '@/const/settings/knowledge';
 import { AsyncTaskModel } from '@/database/models/asyncTask';
 import { ChunkModel } from '@/database/models/chunk';
@@ -168,9 +167,9 @@ export const fileRouter = router({
         content = await ctx.fileService.getFileByteArray(file.url);
       } catch (e) {
         console.error(e);
-        // if file not found, delete it from db
+        // if file not found, we should not delete it from db
+        // because it may be a temporary error or the file is just not uploaded yet
         if ((e as any).Code === 'NoSuchKey') {
-          await ctx.fileModel.delete(input.fileId, serverDBEnv.REMOVE_GLOBAL_FILE);
           throw new TRPCError({ code: 'BAD_REQUEST', message: 'File not found' });
         }
       }
