@@ -11,7 +11,7 @@ import { systemRole } from './systemRole';
  * Note: model and provider are intentionally undefined to use user's default settings
  */
 export const INBOX: BuiltinAgentDefinition = {
-  avatar: '/avatars/lobe-ai.png',
+  avatar: '/images/ai-avatar-dog.png',
   runtime: (ctx) => ({
     plugins: [GTDIdentifier, NotebookIdentifier, ...(ctx.plugins || [])],
     systemRole: systemRole,
