@@ -32,21 +32,23 @@ const Nav = memo(() => {
   const isDevMode = useUserStore((s) => userGeneralSettingsSelectors.config(s).isDevMode);
   const hideProfile = !isAgentEditable;
   const switchTopic = useChatStore((s) => s.switchTopic);
-  const [openNewTopicOrSaveTopic] = useChatStore((s) => [s.openNewTopicOrSaveTopic]);
+  const openNewTopicOrSaveTopic = useChatStore((s) => s.openNewTopicOrSaveTopic);
 
-  const { mutate } = useActionSWR('openNewTopicOrSaveTopic', openNewTopicOrSaveTopic);
-  const handleNewTopic = () => {
+  const { mutate, isValidating } = useActionSWR('openNewTopicOrSaveTopic', openNewTopicOrSaveTopic);
+
+  const handleNewTopic = async () => {
     // If in agent sub-route, navigate back to agent chat first
     if (isProfileActive && agentId) {
       router.push(urlJoin('/agent', agentId));
     }
-    mutate();
+    await mutate();
   };
 
   return (
     <Flexbox gap={1} paddingInline={4}>
       <NavItem
         icon={MessageSquarePlusIcon}
+        loading={isValidating}
         title={tTopic('actions.addNewTopic')}
         onClick={handleNewTopic}
       />
