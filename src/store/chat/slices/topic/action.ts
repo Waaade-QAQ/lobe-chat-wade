@@ -157,10 +157,10 @@ export const chatTopic: StateCreator<
     const { switchTopic, saveToTopic, refreshMessages, activeTopicId } = get();
     const hasTopic = !!activeTopicId;
 
-    if (hasTopic) switchTopic(null);
+    if (hasTopic) await switchTopic(null);
     else {
       await saveToTopic();
-      refreshMessages();
+      await refreshMessages();
     }
   },
 
