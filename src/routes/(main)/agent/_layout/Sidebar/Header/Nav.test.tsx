@@ -7,6 +7,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import Nav from './Nav';
 
+const isValidatingMock = vi.hoisted(() => vi.fn());
 const mutateMock = vi.hoisted(() => vi.fn());
 const openNewTopicOrSaveTopicMock = vi.hoisted(() => vi.fn());
 const pushMock = vi.hoisted(() => vi.fn());
@@ -39,8 +40,7 @@ vi.mock('react-i18next', () => ({
 }));
 
 vi.mock('react-router-dom', async () => {
-  // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-  const actual = (await vi.importActual('react-router-dom')) as typeof import('react-router-dom');
+  const actual = await vi.importActual<typeof import('react-router-dom')>('react-router-dom');
 
   return {
     ...actual,
@@ -55,15 +55,17 @@ vi.mock('@/const/url', () => ({
 vi.mock('@/features/NavPanel/components/NavItem', () => ({
   default: ({
     active,
+    loading,
     onClick,
     title,
   }: {
     active?: boolean;
+    loading?: boolean;
     onClick?: () => void;
     title: ReactNode;
   }) => (
-    <button data-active={String(active)} type="button" onClick={onClick}>
-      {title}
+    <button data-active={String(active)} disabled={loading} type="button" onClick={onClick}>
+      {loading ? 'Loading...' : title}
     </button>
   ),
 }));
@@ -80,6 +82,7 @@ vi.mock('@/libs/router/navigation', () => ({
 
 vi.mock('@/libs/swr', () => ({
   useActionSWR: () => ({
+    isValidating: isValidatingMock(),
     mutate: mutateMock,
   }),
 }));
@@ -122,6 +125,7 @@ vi.mock('@/store/serverConfig', () => ({
 
 describe('Agent sidebar header nav', () => {
   beforeEach(() => {
+    isValidatingMock.mockReset();
     mutateMock.mockReset();
     openNewTopicOrSaveTopicMock.mockReset();
     pushMock.mockReset();
@@ -130,6 +134,7 @@ describe('Agent sidebar header nav', () => {
     useParamsMock.mockReset();
     usePathnameMock.mockReset();
 
+    isValidatingMock.mockReturnValue(false);
     useParamsMock.mockReturnValue({ aid: 'agt_eH4zL98zBx5u', topicId: 'tpc_2FCHvjS7d4CA' });
   });
 
@@ -155,5 +160,14 @@ describe('Agent sidebar header nav', () => {
 
     expect(pushMock).toHaveBeenCalledWith('/agent/agt_eH4zL98zBx5u');
     expect(mutateMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('shows loading state while opening a topic', () => {
+    isValidatingMock.mockReturnValue(true);
+    usePathnameMock.mockReturnValue('/agent/agt_eH4zL98zBx5u');
+
+    render(<Nav />);
+
+    expect(screen.getByRole('button', { name: 'Loading...' })).toBeDisabled();
   });
 });

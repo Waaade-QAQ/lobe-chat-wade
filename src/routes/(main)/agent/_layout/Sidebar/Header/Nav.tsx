@@ -45,23 +45,24 @@ const Nav = memo(() => {
   const hideChannel =
     hideProfile || (!!heterogeneousProviderType && heterogeneousProviderType !== 'claude-code');
   const switchTopic = useChatStore((s) => s.switchTopic);
-  const [openNewTopicOrSaveTopic] = useChatStore((s) => [s.openNewTopicOrSaveTopic]);
+  const openNewTopicOrSaveTopic = useChatStore((s) => s.openNewTopicOrSaveTopic);
 
-  const { mutate } = useActionSWR('openNewTopicOrSaveTopic', openNewTopicOrSaveTopic);
-  const handleNewTopic = () => {
+  const { mutate, isValidating } = useActionSWR('openNewTopicOrSaveTopic', openNewTopicOrSaveTopic);
+  const handleNewTopic = async () => {
     // Always navigate to the bare agent chat URL — drops any sub-route
     // (/profile, /channel, /page, /cron/:cronId, …) and any `:topicId`
     // segment so the new topic isn't conflated with the previous URL.
     if (agentId) {
       router.push(urlJoin('/agent', agentId));
     }
-    mutate();
+    await mutate();
   };
 
   return (
     <Flexbox gap={1} paddingInline={4}>
       <NavItem
         icon={MessageSquarePlusIcon}
+        loading={isValidating}
         title={tTopic('actions.addNewTopic')}
         onClick={handleNewTopic}
       />
