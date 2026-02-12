@@ -337,9 +337,9 @@ export const resolveRuntimeAgentConfig = (
       return ModelRuntime.initializeWithProvider(provider, { userId: options?.userId }, hooks);
     }
 
-    let { apiKey: userApiKey, baseURL: userBaseURL } = extractCredentialsFromVault(
-      keyVaults?.[provider],
-    );
+    const credentials = extractCredentialsFromVault(keyVaults?.[provider]);
+    let userApiKey = credentials.apiKey;
+    const userBaseURL = credentials.baseURL;
 
     let source: 'user-vault' | 'system-config' = 'user-vault';
 
