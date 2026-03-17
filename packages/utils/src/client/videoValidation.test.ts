@@ -8,46 +8,32 @@ describe('validateVideoFileSize', () => {
     const result = validateVideoFileSize(mockFile);
 
     expect(result.isValid).toBe(true);
-    expect(result.actualSize).toBeUndefined();
   });
 
-  it('should return valid for video files under 20MB', () => {
+  it('should return valid for video files regardless of size (small)', () => {
     const mockVideoFile = new File(['x'.repeat(10 * 1024 * 1024)], 'video.mp4', {
       type: 'video/mp4',
     });
     const result = validateVideoFileSize(mockVideoFile);
 
     expect(result.isValid).toBe(true);
-    expect(result.actualSize).toBe('10.0 MB');
   });
 
-  it('should return invalid for video files over 20MB', () => {
-    const mockLargeVideoFile = new File(['x'.repeat(25 * 1024 * 1024)], 'large-video.mp4', {
+  it('should return valid for video files regardless of size (large)', () => {
+    const mockLargeVideoFile = new File(['x'.repeat(100 * 1024 * 1024)], 'large-video.mp4', {
       type: 'video/mp4',
     });
     const result = validateVideoFileSize(mockLargeVideoFile);
 
-    expect(result.isValid).toBe(false);
-    expect(result.actualSize).toBe('25.0 MB');
+    expect(result.isValid).toBe(true);
   });
 
-  it('should return invalid for video files exactly at 20MB limit plus 1 byte', () => {
-    const mockBoundaryFile = new File(['x'.repeat(20 * 1024 * 1024 + 1)], 'boundary.mp4', {
-      type: 'video/mp4',
+  it('should return valid for audio files regardless of size', () => {
+    const mockAudioFile = new File(['x'.repeat(50 * 1024 * 1024)], 'audio.mp3', {
+      type: 'audio/mp3',
     });
-    const result = validateVideoFileSize(mockBoundaryFile);
-
-    expect(result.isValid).toBe(false);
-    expect(result.actualSize).toBe('20.0 MB');
-  });
-
-  it('should return valid for video files exactly at 20MB limit', () => {
-    const mockBoundaryFile = new File(['x'.repeat(20 * 1024 * 1024)], 'boundary.mp4', {
-      type: 'video/mp4',
-    });
-    const result = validateVideoFileSize(mockBoundaryFile);
+    const result = validateVideoFileSize(mockAudioFile);
 
     expect(result.isValid).toBe(true);
-    expect(result.actualSize).toBe('20.0 MB');
   });
 });
