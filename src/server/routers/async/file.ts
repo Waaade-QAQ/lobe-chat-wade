@@ -5,7 +5,6 @@ import { chunk } from 'es-toolkit/compat';
 import pMap from 'p-map';
 import { z } from 'zod';
 
-<<<<<<< HEAD
 import { checkEmbeddingUsage } from '@/business/server/trpc-middlewares/async';
 import { DEFAULT_FILE_EMBEDDING_MODEL_ITEM } from '@/const/settings/knowledge';
 import { AsyncTaskModel } from '@/database/models/asyncTask';
