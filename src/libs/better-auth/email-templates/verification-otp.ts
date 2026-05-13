@@ -33,7 +33,7 @@ export const getVerificationOTPEmailTemplate = (params: {
     <div style="text-align: center; margin-bottom: 32px;">
       <div style="display: inline-flex; align-items: center; justify-content: center; background-color: #ffffff; border-radius: 12px; padding: 8px 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
         <span style="font-size: 24px; line-height: 1; margin-right: 10px;">🤯</span>
-        <span style="font-size: 18px; font-weight: 700; color: #000000; letter-spacing: -0.5px;">LobeHub</span>
+        <span style="font-size: 18px; font-weight: 700; color: #000000; letter-spacing: -0.5px;">糯米AI</span>
       </div>
     </div>
 
@@ -55,8 +55,9 @@ export const getVerificationOTPEmailTemplate = (params: {
         ${userName ? `<p style="margin: 0 0 16px 0;">Hi <strong>${userName}</strong>,</p>` : ''}
 
         <p style="margin: 0 0 24px 0;">
-          Thanks for creating an account with LobeHub. To verify your email address, please use the verification code below:
+          Thanks for creating an account with 糯米AI. To verify your email address, please use the verification code below:
         </p>
+
 
         <!-- OTP Code Box -->
         <div style="text-align: center; margin: 36px 0;">
@@ -93,14 +94,15 @@ export const getVerificationOTPEmailTemplate = (params: {
     <!-- Footer -->
     <div style="text-align: center; margin-top: 32px;">
       <p style="color: #a1a1aa; font-size: 13px; margin: 0;">
-        © 2026 LobeHub. All rights reserved.
+        © 2026 糯米AI. All rights reserved.
       </p>
     </div>
   </div>
 </body>
 </html>
     `,
-    subject: 'Verify Your Email - LobeHub',
+    subject: 'Verify Your Email - 糯米AI',
     text: `Your verification code is: ${otp}\n\nThis code will expire in ${expirationText}.\n\nIf you didn't request this code, you can safely ignore this email.`,
   };
 };
+
