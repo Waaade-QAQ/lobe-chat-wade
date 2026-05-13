@@ -196,7 +196,7 @@ export default {
   'historySummary': 'Historical Message Summary',
   'inactive': 'Inactive',
   'inbox.desc': 'Collaborate in one Workspace and move ideas into outcomes.',
-  'inbox.title': 'Lobe AI',
+  'inbox.title': '糯米AI',
   'input.addAi': 'Add an AI message',
   'input.addUser': 'Add a user message',
   'input.costEstimate.creditsPerMillionTokens': '{{credits}} credits/M tokens',
