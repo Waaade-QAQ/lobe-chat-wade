@@ -3,7 +3,7 @@
   "crons": [
     {
       "path": "/api/agent/gateway",
-      "schedule": "*/5 * * * *"
+      "schedule": "0 0 * * *"
     }
   ],
   "headers": [
