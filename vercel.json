@@ -1,5 +1,11 @@
 {
   "buildCommand": "bun run build:vercel",
+  "crons": [
+    {
+      "path": "/api/agent/gateway",
+      "schedule": "*/5 * * * *"
+    }
+  ],
   "headers": [
     {
       "source": "/_spa/(.*)",

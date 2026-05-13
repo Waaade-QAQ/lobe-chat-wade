@@ -151,3 +151,4 @@ docs/superpowers/
 
 # Kagura agent runtime
 .kagura/
+.vercel
