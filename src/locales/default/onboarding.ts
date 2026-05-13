@@ -64,7 +64,7 @@ export default {
   'agent.welcome.sentence.2': 'What kind of partner do you want me to be?',
   'agent.welcome.sentence.3': 'First, give me a name :)',
   'agent.welcome.footer':
-    'Configure your Lobe AI Agent. It learns from every interaction, and the longer it runs, the better it gets to know you.',
+    'Configure your 糯米AI Agent. It learns from every interaction, and the longer it runs, the better it gets to know you.',
   'agent.greeting.prompt': 'Give me a name, a vibe, and an emoji',
   'agent.greeting.nameLabel': 'Name',
   'agent.greeting.namePlaceholder': 'e.g. Lumi, Atlas, Neko...',

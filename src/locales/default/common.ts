@@ -9,7 +9,7 @@ export default {
   'alert.cloud.title': '{{name}} beta is live',
   'agentOnboardingPromo.actionLabel': 'Try it now',
   'agentOnboardingPromo.description':
-    'Set up your agent teams in a quick chat with Lobe AI. Your existing agents remain unchanged.',
+    'Set up your agent teams in a quick chat with 糯米AI. Your existing agents remain unchanged.',
   'agentOnboardingPromo.title': 'Quick Wizard',
   'appLoading.appIdle': 'Ready to start',
   'appLoading.appInitializing': 'Application is starting...',
@@ -32,7 +32,7 @@ export default {
   'batchDelete': 'Batch Delete',
   'blog': 'Product Blog',
   'botIntegrationBanner.dismiss': 'Dismiss',
-  'botIntegrationBanner.title': 'Talk to Lobe AI on your favorite messaging apps',
+  'botIntegrationBanner.title': 'Talk to 糯米AI on your favorite messaging apps',
   'branching': 'Create Subtopic',
   'branchingDisable':
     'The "Sub-topic" feature is unavailable in the current mode. To use this feature, please switch to Postgres/Pglite DB mode or use 糯米世界 Cloud.',
@@ -125,7 +125,7 @@ export default {
   'cmdk.askAIHeadingEmpty': 'Choose an AI feature',
   'cmdk.askAgentHeading': 'Ask Agent',
   'cmdk.askAgentPlaceholder': 'Ask {{agent}} something...',
-  'cmdk.askLobeAI': 'Ask Lobe AI',
+  'cmdk.askLobeAI': 'Ask 糯米AI',
   'cmdk.community': 'Community',
   'cmdk.communitySupport': 'Community Support',
   'cmdk.contactUs': 'Contact Us',
